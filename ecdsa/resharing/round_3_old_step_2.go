@@ -24,7 +24,7 @@ func (round *round3) Start() *tss.Error {
 	if !round.ReSharingParams().IsOldCommittee() {
 		return nil
 	}
-	round.allOldOK()
+	// round.allOldOK()
 
 	Pi := round.PartyID()
 	i := Pi.Index
@@ -33,8 +33,11 @@ func (round *round3) Start() *tss.Error {
 	for j, Pj := range round.NewParties().IDs() {
 		share := round.temp.NewShares[j]
 		r3msg1 := NewDGRound3Message1(Pj, round.PartyID(), share)
-		round.temp.dgRound3Message1s[i] = r3msg1
-		round.out <- r3msg1
+		if i != j {
+			round.out <- r3msg1
+		} else {
+			round.temp.dgRound3Message1s[i] = r3msg1
+		}
 	}
 
 	vDeCmt := round.temp.VD
