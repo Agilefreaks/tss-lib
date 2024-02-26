@@ -33,10 +33,10 @@ func (round *round3) Start() *tss.Error {
 	for j, Pj := range round.NewParties().IDs() {
 		share := round.temp.NewShares[j]
 		r3msg1 := NewDGRound3Message1(Pj, round.PartyID(), share)
-		if i != j {
-			round.out <- r3msg1
-		} else {
+		if Pi.Id == Pj.Id {
 			round.temp.dgRound3Message1s[i] = r3msg1
+		} else {
+			round.out <- r3msg1
 		}
 	}
 
